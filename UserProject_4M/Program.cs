@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using UserProject_4M.Data;
+using UserProject_4M.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,11 @@ builder.Services.AddControllersWithViews();
 // регистрируем сервис
 builder.Services.AddDbContext<AppIdentityDbContext>(options =>
  options.UseSqlite(builder.Configuration.GetConnectionString("MyDatabase")));
+
+// сервис для Core Identity
+builder.Services.AddIdentity<AppUser, IdentityRole>().
+    AddEntityFrameworkStores<AppIdentityDbContext>().
+    AddDefaultTokenProviders();
 
 var app = builder.Build();
 
