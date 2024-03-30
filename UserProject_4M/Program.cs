@@ -13,8 +13,14 @@ builder.Services.AddDbContext<AppIdentityDbContext>(options =>
  options.UseSqlite(builder.Configuration.GetConnectionString("MyDatabase")));
 
 // сервис для Core Identity
-builder.Services.AddIdentity<AppUser, IdentityRole>().
-    AddEntityFrameworkStores<AppIdentityDbContext>().
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+}).AddEntityFrameworkStores<AppIdentityDbContext>().
     AddDefaultTokenProviders();
 
 var app = builder.Build();
